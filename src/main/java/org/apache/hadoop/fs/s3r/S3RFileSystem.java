@@ -361,7 +361,7 @@ public class S3RFileSystem extends FileSystem {
    * @return
    */
   public String getScheme() {
-    return Constants.FS_S3R;
+    return "s3a";
   }
 
   /** Returns a URI whose scheme and authority identify this FileSystem.*/

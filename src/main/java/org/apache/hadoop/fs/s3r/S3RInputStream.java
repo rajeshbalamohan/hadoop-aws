@@ -31,10 +31,13 @@ import java.io.IOException;
 import java.net.SocketException;
 import java.net.SocketTimeoutException;
 
+/**
+ * With fixes for S3A
+ */
 public class S3RInputStream extends FSInputStream {
 
   public static final Logger LOG = S3RFileSystem.LOG;
-  public static final long CLOSE_THRESHOLD = 8 * 1024;
+  public static final long CLOSE_THRESHOLD = 4 * 1024;
 
   private FileSystem.Statistics stats;
 
@@ -51,6 +54,7 @@ public class S3RInputStream extends FSInputStream {
 
   public S3RInputStream(String bucket, String key, long contentLength, AmazonS3Client client,
       FileSystem.Statistics stats) {
+    LOG.info("Using " + this.getClass().getName());
     this.bucket = bucket;
     this.key = key;
     this.contentLength = contentLength;
@@ -137,9 +141,10 @@ public class S3RInputStream extends FSInputStream {
    * Position the stream to a specific position.
    *
    * @param targetPos
+   * @param length    length of content that needs to be read from targetPos
    * @throws IOException
    */
-  private void seekInStream(long targetPos) throws IOException {
+  private void seekInStream(long targetPos, long length) throws IOException {
     checkNotClosed();
 
     if ((s3InputStream != null) && (targetPos == pos)) {
@@ -148,25 +153,28 @@ public class S3RInputStream extends FSInputStream {
     }
 
     // compute how much more to skip
-    long length = targetPos - pos;
+    long diff = targetPos - pos;
     if (s3InputStream != null) {
       if (targetPos > pos) {
-        if (length <= s3InputStream.available()) {
-          LOG.info("SKIPPING : " + length);
+        if ((diff + length) <= s3InputStream.available()) {
           // already available in buffer
-          pos += s3InputStream.skip(length);
+          pos += s3InputStream.skip(diff);
           if (pos != targetPos) {
             throw new IOException("Failed to seek to " + targetPos
                 + ". Current position " + pos);
           }
           return;
+        } else {
+          if (LOG.isDebugEnabled()) {
+            LOG.debug(
+                "diff+length=" + (diff + length) + ", available=" + s3InputStream.available());
+          }
         }
       }
     }
 
     // close the stream and open at desired position
     pos = targetPos;
-    LOG.info("content: " + this.contentLength);
     closeStream(this.contentLength);
   }
 
@@ -178,9 +186,11 @@ public class S3RInputStream extends FSInputStream {
   @Override
   public synchronized int read() throws IOException {
 
-    //LOG.info("read(); streamPos=" + pos + ", nextReadPos=" + nextReadPos);
+    if (LOG.isDebugEnabled()) {
+      LOG.debug("read(); streamPos=" + pos + ", nextReadPos=" + nextReadPos);
+    }
 
-    seekInStream(nextReadPos);
+    seekInStream(nextReadPos, 1);
 
     if (s3InputStream == null) {
       reopen(nextReadPos, -1);
@@ -212,12 +222,11 @@ public class S3RInputStream extends FSInputStream {
 
   @Override
   public synchronized int read(byte[] buf, int off, int len) throws IOException {
-
-    /*
-    LOG.info("read(buf,off,len); streamPos=" + pos + ", nextReadPos=" + nextReadPos + ", "
-        + "targetPos=" + len + ", off=" + off);
-        */
-    seekInStream(nextReadPos);
+    if (LOG.isDebugEnabled()) {
+      LOG.debug("read(buf,off,len); streamPos=" + pos + ", nextReadPos=" + nextReadPos + ", "
+          + "targetPos=" + len + ", off=" + off);
+    }
+    seekInStream(nextReadPos, len);
 
     if (s3InputStream == null) {
       reopen(nextReadPos, -1);
@@ -252,16 +261,18 @@ public class S3RInputStream extends FSInputStream {
   public void readFully(long position, byte[] buffer, int offset, int length)
       throws IOException {
 
+    if (LOG.isDebugEnabled()) {
+      LOG.debug("Opening for readFully at " + position + " for len=" + length + ", pos=" + pos);
+    }
+
     reopen(position, length);
-
-    //we will restore this back
-    nextReadPos = pos;
-
     int nread = 0;
     while (nread < length) {
       int nbytes = s3InputStream.read(buffer, offset + nread, length - nread);
 
       pos += nbytes;
+      nextReadPos += nbytes;
+
       if (nbytes < 0) {
         throw new EOFException("End of file reached before reading fully.");
       }
@@ -271,10 +282,7 @@ public class S3RInputStream extends FSInputStream {
     if (stats != null) {
       stats.incrementBytesRead(length);
     }
-
-    seek(nextReadPos);
   }
-
 
   private void checkNotClosed() throws IOException {
     if (closed) {
@@ -290,26 +298,24 @@ public class S3RInputStream extends FSInputStream {
   }
 
   private void closeStream(long contentLength) throws IOException {
-    long time = System.currentTimeMillis();
     if (s3InputStream != null) {
       if (contentLength - pos <= CLOSE_THRESHOLD) {
         s3InputStream.close();
         if (LOG.isDebugEnabled()) {
-          LOG.debug("Closed stream");
+          LOG.debug("Closed stream; streamPos=" + pos + ", nextReadPos=" + nextReadPos + ", "
+              + "contentLength=" + contentLength);
         }
       } else {
         // Abort, rather than just close, the underlying stream.  Otherwise, the
         // remaining object payload is read from S3 while closing the stream.
         s3InputStream.abort();
         if (LOG.isDebugEnabled()) {
-          LOG.debug("Closed stream with abort()");
+          LOG.debug("Closed stream with abort(); streamPos=" + pos + ", nextReadPos=" +
+              nextReadPos + ", " + "contentLength=" + contentLength);
         }
       }
       s3InputStream = null;
     }
-    LOG.info("Time taken for closeStream : " + (System.currentTimeMillis() - time) + ", " +
-        (contentLength - pos <= CLOSE_THRESHOLD) + ", contentLen=" + contentLength + ", pos=" +
-        pos);
   }
 
   @Override
