@@ -87,7 +87,7 @@ public class S3RInputStream extends FSInputStream {
       if (LOG.isDebugEnabled()) {
         LOG.debug("Closing the previous stream");
       }
-      closeStream(length);
+      closeStream(requestedStreamLen);
     }
 
     validateTargetPosition(targetPos);
@@ -182,7 +182,7 @@ public class S3RInputStream extends FSInputStream {
 
     // close the stream and open at desired position
     pos = targetPos;
-    closeStream(this.contentLength);
+    closeStream(this.requestedStreamLen);
   }
 
   @Override
