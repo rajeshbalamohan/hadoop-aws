@@ -10,3 +10,6 @@ Running:
     e.g "ADD JAR file:///home/rajesh/hadoop-aws-s3r-2.7.1.jar;" (in case the jar in home folder).
 4. Run your queries as normal.
 
+OOTB:
+===
+1. Attached here the pre-built hadoop-aws-s3r-2.7.1.jar (in case of checking quickly without having to recompile)
