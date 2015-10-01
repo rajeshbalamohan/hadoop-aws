@@ -81,7 +81,7 @@ public class S3RInputStream extends FSInputStream {
       throws IOException {
 
     requestedStreamLen = (length < 0) ? this.contentLength
-        : Math.max(CLOSE_THRESHOLD, Math.max(CLOSE_THRESHOLD, (targetPos + length)));
+        : Math.max(CLOSE_THRESHOLD, (targetPos + length));
 
     if (s3InputStream != null) {
       if (LOG.isDebugEnabled()) {
