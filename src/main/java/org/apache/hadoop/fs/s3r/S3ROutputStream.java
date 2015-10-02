@@ -38,11 +38,11 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 
-import static org.apache.hadoop.fs.s3a.Constants.BUFFER_DIR;
-import static org.apache.hadoop.fs.s3a.Constants.DEFAULT_MIN_MULTIPART_THRESHOLD;
-import static org.apache.hadoop.fs.s3a.Constants.DEFAULT_MULTIPART_SIZE;
-import static org.apache.hadoop.fs.s3a.Constants.MIN_MULTIPART_THRESHOLD;
-import static org.apache.hadoop.fs.s3a.Constants.MULTIPART_SIZE;
+import static org.apache.hadoop.fs.s3r.Constants.BUFFER_DIR;
+import static org.apache.hadoop.fs.s3r.Constants.DEFAULT_MIN_MULTIPART_THRESHOLD;
+import static org.apache.hadoop.fs.s3r.Constants.DEFAULT_MULTIPART_SIZE;
+import static org.apache.hadoop.fs.s3r.Constants.MIN_MULTIPART_THRESHOLD;
+import static org.apache.hadoop.fs.s3r.Constants.MULTIPART_SIZE;
 
 public class S3ROutputStream extends OutputStream {
   private OutputStream backupStream;

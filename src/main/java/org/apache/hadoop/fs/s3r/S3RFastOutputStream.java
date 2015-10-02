@@ -39,7 +39,7 @@ import com.google.common.util.concurrent.MoreExecutors;
 import org.apache.commons.lang.StringUtils;
 import org.apache.hadoop.classification.InterfaceStability;
 import org.apache.hadoop.fs.FileSystem;
-import org.apache.hadoop.fs.s3a.Constants;
+import org.apache.hadoop.fs.s3r.Constants;
 import org.apache.hadoop.util.Progressable;
 import org.slf4j.Logger;
 

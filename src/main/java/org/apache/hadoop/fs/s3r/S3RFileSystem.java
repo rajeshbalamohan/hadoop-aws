@@ -70,50 +70,50 @@ import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 
-import static org.apache.hadoop.fs.s3a.Constants.ACCESS_KEY;
-import static org.apache.hadoop.fs.s3a.Constants.CANNED_ACL;
-import static org.apache.hadoop.fs.s3a.Constants.CORE_THREADS;
-import static org.apache.hadoop.fs.s3a.Constants.DEFAULT_CANNED_ACL;
-import static org.apache.hadoop.fs.s3a.Constants.DEFAULT_CORE_THREADS;
-import static org.apache.hadoop.fs.s3a.Constants.DEFAULT_ESTABLISH_TIMEOUT;
-import static org.apache.hadoop.fs.s3a.Constants.DEFAULT_FAST_UPLOAD;
-import static org.apache.hadoop.fs.s3a.Constants.DEFAULT_KEEPALIVE_TIME;
-import static org.apache.hadoop.fs.s3a.Constants.DEFAULT_MAXIMUM_CONNECTIONS;
-import static org.apache.hadoop.fs.s3a.Constants.DEFAULT_MAX_ERROR_RETRIES;
-import static org.apache.hadoop.fs.s3a.Constants.DEFAULT_MAX_PAGING_KEYS;
-import static org.apache.hadoop.fs.s3a.Constants.DEFAULT_MAX_THREADS;
-import static org.apache.hadoop.fs.s3a.Constants.DEFAULT_MAX_TOTAL_TASKS;
-import static org.apache.hadoop.fs.s3a.Constants.DEFAULT_MIN_MULTIPART_THRESHOLD;
-import static org.apache.hadoop.fs.s3a.Constants.DEFAULT_MULTIPART_SIZE;
-import static org.apache.hadoop.fs.s3a.Constants.DEFAULT_PURGE_EXISTING_MULTIPART;
-import static org.apache.hadoop.fs.s3a.Constants.DEFAULT_PURGE_EXISTING_MULTIPART_AGE;
-import static org.apache.hadoop.fs.s3a.Constants.DEFAULT_SECURE_CONNECTIONS;
-import static org.apache.hadoop.fs.s3a.Constants.DEFAULT_SOCKET_TIMEOUT;
-import static org.apache.hadoop.fs.s3a.Constants.ENDPOINT;
-import static org.apache.hadoop.fs.s3a.Constants.ESTABLISH_TIMEOUT;
-import static org.apache.hadoop.fs.s3a.Constants.FAST_UPLOAD;
-import static org.apache.hadoop.fs.s3a.Constants.FS_S3A_BLOCK_SIZE;
-import static org.apache.hadoop.fs.s3a.Constants.KEEPALIVE_TIME;
-import static org.apache.hadoop.fs.s3a.Constants.MAXIMUM_CONNECTIONS;
-import static org.apache.hadoop.fs.s3a.Constants.MAX_ERROR_RETRIES;
-import static org.apache.hadoop.fs.s3a.Constants.MAX_PAGING_KEYS;
-import static org.apache.hadoop.fs.s3a.Constants.MAX_THREADS;
-import static org.apache.hadoop.fs.s3a.Constants.MAX_TOTAL_TASKS;
-import static org.apache.hadoop.fs.s3a.Constants.MIN_MULTIPART_THRESHOLD;
-import static org.apache.hadoop.fs.s3a.Constants.MULTIPART_SIZE;
-import static org.apache.hadoop.fs.s3a.Constants.PROXY_DOMAIN;
-import static org.apache.hadoop.fs.s3a.Constants.PROXY_HOST;
-import static org.apache.hadoop.fs.s3a.Constants.PROXY_PASSWORD;
-import static org.apache.hadoop.fs.s3a.Constants.PROXY_PORT;
-import static org.apache.hadoop.fs.s3a.Constants.PROXY_USERNAME;
-import static org.apache.hadoop.fs.s3a.Constants.PROXY_WORKSTATION;
-import static org.apache.hadoop.fs.s3a.Constants.PURGE_EXISTING_MULTIPART;
-import static org.apache.hadoop.fs.s3a.Constants.PURGE_EXISTING_MULTIPART_AGE;
-import static org.apache.hadoop.fs.s3a.Constants.S3N_FOLDER_SUFFIX;
-import static org.apache.hadoop.fs.s3a.Constants.SECRET_KEY;
-import static org.apache.hadoop.fs.s3a.Constants.SECURE_CONNECTIONS;
-import static org.apache.hadoop.fs.s3a.Constants.SERVER_SIDE_ENCRYPTION_ALGORITHM;
-import static org.apache.hadoop.fs.s3a.Constants.SOCKET_TIMEOUT;
+import static org.apache.hadoop.fs.s3r.Constants.ACCESS_KEY;
+import static org.apache.hadoop.fs.s3r.Constants.CANNED_ACL;
+import static org.apache.hadoop.fs.s3r.Constants.CORE_THREADS;
+import static org.apache.hadoop.fs.s3r.Constants.DEFAULT_CANNED_ACL;
+import static org.apache.hadoop.fs.s3r.Constants.DEFAULT_CORE_THREADS;
+import static org.apache.hadoop.fs.s3r.Constants.DEFAULT_ESTABLISH_TIMEOUT;
+import static org.apache.hadoop.fs.s3r.Constants.DEFAULT_FAST_UPLOAD;
+import static org.apache.hadoop.fs.s3r.Constants.DEFAULT_KEEPALIVE_TIME;
+import static org.apache.hadoop.fs.s3r.Constants.DEFAULT_MAXIMUM_CONNECTIONS;
+import static org.apache.hadoop.fs.s3r.Constants.DEFAULT_MAX_ERROR_RETRIES;
+import static org.apache.hadoop.fs.s3r.Constants.DEFAULT_MAX_PAGING_KEYS;
+import static org.apache.hadoop.fs.s3r.Constants.DEFAULT_MAX_THREADS;
+import static org.apache.hadoop.fs.s3r.Constants.DEFAULT_MAX_TOTAL_TASKS;
+import static org.apache.hadoop.fs.s3r.Constants.DEFAULT_MIN_MULTIPART_THRESHOLD;
+import static org.apache.hadoop.fs.s3r.Constants.DEFAULT_MULTIPART_SIZE;
+import static org.apache.hadoop.fs.s3r.Constants.DEFAULT_PURGE_EXISTING_MULTIPART;
+import static org.apache.hadoop.fs.s3r.Constants.DEFAULT_PURGE_EXISTING_MULTIPART_AGE;
+import static org.apache.hadoop.fs.s3r.Constants.DEFAULT_SECURE_CONNECTIONS;
+import static org.apache.hadoop.fs.s3r.Constants.DEFAULT_SOCKET_TIMEOUT;
+import static org.apache.hadoop.fs.s3r.Constants.ENDPOINT;
+import static org.apache.hadoop.fs.s3r.Constants.ESTABLISH_TIMEOUT;
+import static org.apache.hadoop.fs.s3r.Constants.FAST_UPLOAD;
+import static org.apache.hadoop.fs.s3r.Constants.FS_S3A_BLOCK_SIZE;
+import static org.apache.hadoop.fs.s3r.Constants.KEEPALIVE_TIME;
+import static org.apache.hadoop.fs.s3r.Constants.MAXIMUM_CONNECTIONS;
+import static org.apache.hadoop.fs.s3r.Constants.MAX_ERROR_RETRIES;
+import static org.apache.hadoop.fs.s3r.Constants.MAX_PAGING_KEYS;
+import static org.apache.hadoop.fs.s3r.Constants.MAX_THREADS;
+import static org.apache.hadoop.fs.s3r.Constants.MAX_TOTAL_TASKS;
+import static org.apache.hadoop.fs.s3r.Constants.MIN_MULTIPART_THRESHOLD;
+import static org.apache.hadoop.fs.s3r.Constants.MULTIPART_SIZE;
+import static org.apache.hadoop.fs.s3r.Constants.PROXY_DOMAIN;
+import static org.apache.hadoop.fs.s3r.Constants.PROXY_HOST;
+import static org.apache.hadoop.fs.s3r.Constants.PROXY_PASSWORD;
+import static org.apache.hadoop.fs.s3r.Constants.PROXY_PORT;
+import static org.apache.hadoop.fs.s3r.Constants.PROXY_USERNAME;
+import static org.apache.hadoop.fs.s3r.Constants.PROXY_WORKSTATION;
+import static org.apache.hadoop.fs.s3r.Constants.PURGE_EXISTING_MULTIPART;
+import static org.apache.hadoop.fs.s3r.Constants.PURGE_EXISTING_MULTIPART_AGE;
+import static org.apache.hadoop.fs.s3r.Constants.S3N_FOLDER_SUFFIX;
+import static org.apache.hadoop.fs.s3r.Constants.SECRET_KEY;
+import static org.apache.hadoop.fs.s3r.Constants.SECURE_CONNECTIONS;
+import static org.apache.hadoop.fs.s3r.Constants.SERVER_SIDE_ENCRYPTION_ALGORITHM;
+import static org.apache.hadoop.fs.s3r.Constants.SOCKET_TIMEOUT;
 
 public class S3RFileSystem extends FileSystem {
   /**
@@ -310,7 +310,7 @@ public class S3RFileSystem extends FileSystem {
     }
     long keepAliveTime = conf.getLong(KEEPALIVE_TIME, DEFAULT_KEEPALIVE_TIME);
     LinkedBlockingQueue<Runnable> workQueue =
-      new LinkedBlockingQueue<>(maxThreads *
+      new LinkedBlockingQueue<Runnable>(maxThreads *
         conf.getInt(MAX_TOTAL_TASKS, DEFAULT_MAX_TOTAL_TASKS));
     threadPoolExecutor = new ThreadPoolExecutor(
         coreThreads,
@@ -585,7 +585,7 @@ public class S3RFileSystem extends FileSystem {
       }
 
       List<DeleteObjectsRequest.KeyVersion> keysToDelete =
-        new ArrayList<>();
+        new ArrayList<DeleteObjectsRequest.KeyVersion>();
       if (dstStatus != null && dstStatus.isEmptyDirectory()) {
         // delete unnecessary fake directory.
         keysToDelete.add(new DeleteObjectsRequest.KeyVersion(dstKey));
@@ -699,7 +699,7 @@ public class S3RFileSystem extends FileSystem {
         request.setMaxKeys(maxKeys);
 
         List<DeleteObjectsRequest.KeyVersion> keys =
-          new ArrayList<>();
+          new ArrayList<DeleteObjectsRequest.KeyVersion>();
         ObjectListing objects = s3.listObjects(request);
         statistics.incrementReadOps(1);
         while (true) {
@@ -1194,7 +1194,8 @@ public class S3RFileSystem extends FileSystem {
           s3.deleteObject(bucket, key + "/");
           statistics.incrementWriteOps(1);
         }
-      } catch (FileNotFoundException | AmazonServiceException e) {
+      } catch (FileNotFoundException e) {
+      } catch (AmazonServiceException e) {
       }
 
       if (f.isRoot()) {
